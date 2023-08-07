@@ -36,13 +36,13 @@ function Todo() {
         </form>
         <div className='list'>
             <ul>
-                {
-                  todos.map((to)=>(
-                    <li>{to}
+                {todos.map((to)=>(
+                    <li className='list-items'>
+                      <div className='list-item-list'>{to}</div>
                     <span>
-                      <IoMdDoneAll />
-                      <FiEdit />
-                      <MdDelete />
+                      <IoMdDoneAll className='list-item-icons' id='complete' title='Complete'/>
+                      <FiEdit className='list-item-icons' id='edit' title='Edit'/>
+                      <MdDelete className='list-item-icons' id='delete' title='Delete'/>
                     </span>
                     </li>
                     
