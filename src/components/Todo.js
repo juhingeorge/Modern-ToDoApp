@@ -14,7 +14,7 @@ function Todo() {
   }
 
   const addTodo = () =>{
-    setTodos([...todos,input])
+    setTodos([...todos,{list : input, id : Date.now() }])
     console.log(todos)
     setInput('')
   }
@@ -25,7 +25,9 @@ function Todo() {
     inputref.current.focus();
   })
 
-
+  const onDelete = (id) =>{
+    setTodos(todos.filter((to)=> to.id !== id))
+  }
 
   return (
     <div className='container'>
@@ -38,11 +40,11 @@ function Todo() {
             <ul>
                 {todos.map((to)=>(
                     <li className='list-items'>
-                      <div className='list-item-list'>{to}</div>
+                      <div className='list-item-list'>{to.list}</div>
                     <span>
                       <IoMdDoneAll className='list-item-icons' id='complete' title='Complete'/>
                       <FiEdit className='list-item-icons' id='edit' title='Edit'/>
-                      <MdDelete className='list-item-icons' id='delete' title='Delete'/>
+                      <MdDelete className='list-item-icons' id='delete' title='Delete' onClick={()=>onDelete(to.id)}/>
                     </span>
                     </li>
                     
