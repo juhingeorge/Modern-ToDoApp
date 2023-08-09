@@ -5,6 +5,9 @@
 install node.js
 
 #create a project
+---------------------------
 npx create-react-app ProjectName
+
 cd ProjectName
+
 npm start
