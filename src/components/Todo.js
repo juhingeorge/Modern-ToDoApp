@@ -8,16 +8,27 @@ import { MdDelete } from 'react-icons/md';
 function Todo() {
   const[input , setInput] = useState('')
   const[todos , setTodos] = useState([])
+  const[editId , setEditId] = useState(0)
 
   const handleSubmit = (e) =>{
     e.preventDefault();
   }
 
   const addTodo = () =>{
-    setTodos([...todos,{list : input, id : Date.now(), status : false }])
-    console.log(todos)
-    setInput('')
-  }
+    if(input !==''){
+      setTodos([...todos,{list : input, id : Date.now(), status : false }])
+      console.log(todos)
+      setInput('');
+    }
+    if(editId){
+      const editTodo = todos.find((todo)=> todo.id === editId)
+      const updateTodo = todos.map((to)=>to.id === editTodo.id
+      ?(to = {list : input , id : to.id , status : false})
+      :(to ={list : to.list , id :to.id , status : false }))
+      setTodos(updateTodo)
+      setEditId()
+    }
+  };
 
   const inputref = useRef('null')
 
@@ -39,12 +50,18 @@ function Todo() {
   setTodos(complete)
   }
 
+  const onEdit = (id) =>{
+    const editTodo = todos.find((to) => to.id === id)
+    setInput(editTodo.list)
+    setEditId(editTodo.id)
+  }
+
   return (
     <div className='container'>
         <h2>TODO APP</h2>
         <form className='form-group' onSubmit={handleSubmit}>
             <input type='text' value={input} ref={inputref} placeholder='Enter the todo' className='form-control' onChange={(event)=>setInput(event.target.value)} />
-            <button onClick={addTodo}>ADD</button>
+            <button onClick={addTodo}>{editId ? 'EDIT' : 'ADD'}</button>
         </form>
         <div className='list'>
             <ul>
@@ -53,7 +70,7 @@ function Todo() {
                       <div className='list-item-list' id={to.status ? 'list-item': ''}>{to.list}</div>
                     <span>
                       <IoMdDoneAll className='list-item-icons' id='complete' title='Complete' onClick={()=>onComplete(to.id)}/>
-                      <FiEdit className='list-item-icons' id='edit' title='Edit'/>
+                      <FiEdit className='list-item-icons' id='edit' title='Edit' onClick={()=>onEdit(to.id)}/>
                       <MdDelete className='list-item-icons' id='delete' title='Delete' onClick={()=>onDelete(to.id)}/>
                     </span>
                     </li>
