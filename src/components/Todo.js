@@ -14,7 +14,7 @@ function Todo() {
   }
 
   const addTodo = () =>{
-    setTodos([...todos,{list : input, id : Date.now() }])
+    setTodos([...todos,{list : input, id : Date.now(), status : false }])
     console.log(todos)
     setInput('')
   }
@@ -29,6 +29,16 @@ function Todo() {
     setTodos(todos.filter((to)=> to.id !== id))
   }
 
+  const onComplete = (id) =>{
+    let complete = todos.map((list)=>{
+      if(list.id === id){
+        return({...list, status : !list.status})
+      }
+      return list
+    })
+  setTodos(complete)
+  }
+
   return (
     <div className='container'>
         <h2>TODO APP</h2>
@@ -40,9 +50,9 @@ function Todo() {
             <ul>
                 {todos.map((to)=>(
                     <li className='list-items'>
-                      <div className='list-item-list'>{to.list}</div>
+                      <div className='list-item-list' id={to.status ? 'list-item': ''}>{to.list}</div>
                     <span>
-                      <IoMdDoneAll className='list-item-icons' id='complete' title='Complete'/>
+                      <IoMdDoneAll className='list-item-icons' id='complete' title='Complete' onClick={()=>onComplete(to.id)}/>
                       <FiEdit className='list-item-icons' id='edit' title='Edit'/>
                       <MdDelete className='list-item-icons' id='delete' title='Delete' onClick={()=>onDelete(to.id)}/>
                     </span>
